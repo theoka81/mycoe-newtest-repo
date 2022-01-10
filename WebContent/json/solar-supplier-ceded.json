@@ -1,0 +1,22 @@
+{
+	"UserId": "",
+	"SupplierNo": "",
+	"CedeSupplierNo": "",
+	"CedeSupplierName": "",
+	"CedeAddress1": "",
+	"CedeAddress2": "",
+	"CedeAddress3": "",
+	"CedeAddress4": "",
+	"CedePostCode": "",
+	"CedeMethod": "",
+	"CedeFileRef": "",
+	"CedeBankName": "",
+	"CedeBranchName": "",
+	"CedeBranchNo": "",
+	"CedeAccNo": "",
+	"CedeAccType": "",
+	"CedeStartDate": "",
+	"CedeEndDate": "",
+	"CedeAuthUser": "",
+	"CedeAuthDate": ""
+}

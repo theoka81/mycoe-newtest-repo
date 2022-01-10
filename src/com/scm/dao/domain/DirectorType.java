@@ -1,0 +1,100 @@
+package com.scm.dao.domain;
+
+import java.io.Serializable;
+import javax.persistence.*;
+import java.sql.Timestamp;
+
+
+/**
+ * The persistent class for the DirectorTypes database table.
+ * 
+ */
+@Entity
+@Table(name="DirectorTypes")
+@NamedQuery(name="DirectorType.findAll", query="SELECT d FROM DirectorType d")
+public class DirectorType implements Serializable {
+	private static final Long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="DirectorTypeId", unique=true, nullable=false)
+	private Integer directorTypeId;
+
+	@Column(name="Code")
+	private String code;
+
+	@Column(name="EffectiveDate")
+	private Timestamp effectiveDate;
+
+	@Column(name="IsActive")
+	private Boolean isActive;
+
+	@Column(name="Name")
+	private String name;
+
+	@Column(name="ProcessedTimeStamp")
+	private Timestamp processedTimeStamp;
+
+	@Column(name="XmlFileId")
+	private Integer xmlFileId;
+
+	public DirectorType() {
+	}
+
+	public Integer getDirectorTypeId() {
+		return this.directorTypeId;
+	}
+
+	public void setDirectorTypeId(Integer directorTypeId) {
+		this.directorTypeId = directorTypeId;
+	}
+
+	public String getCode() {
+		return this.code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public Timestamp getEffectiveDate() {
+		return this.effectiveDate;
+	}
+
+	public void setEffectiveDate(Timestamp effectiveDate) {
+		this.effectiveDate = effectiveDate;
+	}
+
+	public Boolean getIsActive() {
+		return this.isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Timestamp getProcessedTimeStamp() {
+		return this.processedTimeStamp;
+	}
+
+	public void setProcessedTimeStamp(Timestamp processedTimeStamp) {
+		this.processedTimeStamp = processedTimeStamp;
+	}
+
+	public Integer getXmlFileId() {
+		return this.xmlFileId;
+	}
+
+	public void setXmlFileId(Integer xmlFileId) {
+		this.xmlFileId = xmlFileId;
+	}
+
+}

@@ -1,0 +1,6 @@
+DB_URL=jdbc:sqlserver://localhost:57416;databaseName=CatenaQb_New
+CESAR_DB_URL=jdbc:sqlserver://localhost:57416;databaseName=Cesar
+CSDLOCAL_DB_URL=jdbc:sqlserver://localhost:57416;databaseName=CsdLocal
+
+DB_USER_NAME=sa
+DB_PASSWORD=P@ssword12*

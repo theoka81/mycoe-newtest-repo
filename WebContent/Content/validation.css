@@ -1,0 +1,140 @@
+﻿
+p.center {
+  text-align: center;
+}
+
+.row {
+  margin-bottom: 1.5rem;
+}
+
+.column,
+.columns {
+  padding-left: 0;
+}
+
+@media print, screen and (min-width: 40em) {
+  .columns:last-child:not(:first-child) {
+    float: left;
+  }
+
+  aside,
+  main {
+    max-width: 800px;
+  }
+}
+@media print, screen and (min-width: 63em) {
+  aside {
+    max-width: 600px;
+  }
+
+  main {
+    max-width: 800px;
+  }
+}
+
+
+.relative {
+  position: relative;
+}
+
+.centered {
+  margin: auto;
+  max-width: 1200px;
+}
+
+/* Forms */
+[type=color], [type=date], [type=datetime-local], [type=datetime], [type=email], [type=month], [type=number], [type=password], [type=search], [type=tel], [type=text], [type=time], [type=url], [type=week], textarea {
+  margin: 0 0 0.3rem;
+}
+
+label {
+  color: #444;
+  margin-bottom: 0.4rem;
+}
+
+label.is-invalid {
+  color: #ff0022;
+}
+
+
+textarea {
+  height: 5rem;
+  padding-top: 0.5rem;
+}
+
+select, input {
+  height: 2.4375rem;
+}
+
+::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  color: #999;
+  font-size: 0.8rem;
+}
+
+::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #999;
+  font-size: 0.8rem;
+}
+
+:-ms-input-placeholder {
+  /* IE 10+ */
+  color: #999;
+  font-size: 0.8rem;
+}
+
+:-moz-placeholder {
+  /* Firefox 18- */
+  color: #999;
+  font-size: 0.8rem;
+}
+
+/* Icons */
+.hide {
+  display: none;
+}
+
+.icon.validation {
+  width: 13px;
+  height: 13px;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  font-size: 10px;
+  text-align: center;
+  line-height: 0.9rem;
+  color: #fff;
+}
+
+.icon.success {
+  background: #00aa11;
+}
+
+.icon.error {
+  background: #ff0022;
+}
+
+.success {
+  color: #00aa11;
+}
+
+/* Fields */
+.input-wrap.is-invalid input, .input-wrap.is-invalid select, .input-wrap.is-invalid textarea {
+  border: 1px solid #ff0022;
+}
+
+/* Helper/Error */
+.is-helpful {
+  color: #999;
+  font-size:12px;
+  margin-top: 0.5rem;
+}
+
+.is-helpful.error-message {
+  color: #ff0022;
+}
+

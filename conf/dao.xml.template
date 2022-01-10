@@ -1,0 +1,573 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<tx:annotation-driven
+		transaction-manager="transactionManager" mode="aspectj" />
+	<tx:annotation-driven
+		transaction-manager="csdTransactionManager" mode="aspectj" />
+	<tx:annotation-driven
+		transaction-manager="cesarTransactionManager" mode="aspectj" />
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+
+	<bean id="csdTransactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="csdSessionFactory" />
+	</bean>
+
+
+	<bean id="cesarTransactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="cesarSessionFactory" />
+	</bean>
+
+	<bean
+		class="org.springframework.orm.hibernate5.HibernateExceptionTranslator"></bean>
+
+	<bean id="dataSource"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass"
+			value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+		<property name="jdbcUrl"
+			value="@@DB_URL@@" />
+			<property name="user" value="@@DB_USER_NAME@@" />
+			<property name="password" value="@@DB_PASSWORD@@" />
+
+			<property name="initialPoolSize" value="10" />
+			<property name="maxPoolSize" value="50" />
+			<property name="minPoolSize" value="5" />
+			<property name="maxIdleTime" value="600" />
+			<property name="checkoutTimeout" value="60000" />
+			<property name="acquireIncrement" value="2" />
+			<property name="acquireRetryAttempts" value="0" />
+
+			<property name="numHelperThreads" value="6" />
+			<property name="acquireRetryDelay" value="3000" />
+
+			<property name="preferredTestQuery"
+				value="select 1 from dual" />
+			<property name="idleConnectionTestPeriod" value="120" />
+			<property name="testConnectionOnCheckin" value="true" />
+			<property name="connectionTesterClassName"
+				value="com.scm.util.DatabaseConnectionTest" />
+	</bean>
+
+	<bean id="csdDataSource"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass"
+			value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+		<property name="jdbcUrl"
+			value="@@CSDLOCAL_DB_URL@@" />
+		<property name="user" value="sa" />
+		<property name="password" value="P@ssword12*" />
+
+		<property name="initialPoolSize" value="10" />
+		<property name="maxPoolSize" value="50" />
+		<property name="minPoolSize" value="5" />
+		<property name="maxIdleTime" value="600" />
+		<property name="checkoutTimeout" value="60000" />
+		<property name="acquireIncrement" value="2" />
+		<property name="acquireRetryAttempts" value="0" />
+
+		<property name="numHelperThreads" value="6" />
+		<property name="acquireRetryDelay" value="3000" />
+
+		<property name="preferredTestQuery"
+			value="select 1 from dual" />
+		<property name="idleConnectionTestPeriod" value="120" />
+		<property name="testConnectionOnCheckin" value="true" />
+		<property name="connectionTesterClassName"
+			value="com.scm.util.DatabaseConnectionTest" />
+	</bean>
+
+	<bean id="csdSessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="csdDataSource" />
+		<property name="annotatedClasses">
+			<list>
+				<value>com.scm.dao.csdlocal.domain.Accreditation</value>
+				<value>com.scm.dao.csdlocal.domain.AccreditationBody</value>
+				<value>com.scm.dao.csdlocal.domain.AccreditationBodyType</value>
+				<value>com.scm.dao.csdlocal.domain.AccreditationClassType</value>
+				<value>com.scm.dao.csdlocal.domain.AccreditationGradeType</value>
+				<value>com.scm.dao.csdlocal.domain.AccreditationStatus</value>
+				<value>com.scm.dao.csdlocal.domain.Address</value>
+				<value>com.scm.dao.csdlocal.domain.AddressType</value>
+				<value>com.scm.dao.csdlocal.domain.Association</value>
+				<value>com.scm.dao.csdlocal.domain.AssociationStatus</value>
+				<value>com.scm.dao.csdlocal.domain.AssociationType</value>
+				<value>com.scm.dao.csdlocal.domain.Bank</value>
+				<value>com.scm.dao.csdlocal.domain.BankAccount</value>
+				<value>com.scm.dao.csdlocal.domain.BankAccountType</value>
+				<value>com.scm.dao.csdlocal.domain.BankVerificationRespons</value>
+				<value>com.scm.dao.csdlocal.domain.BankVerificationStatus</value>
+				<value>com.scm.dao.csdlocal.domain.Bbbee</value>
+				<value>com.scm.dao.csdlocal.domain.BbbeeCertificateType</value>
+				<value>com.scm.dao.csdlocal.domain.BbbeeIrbaRegisteredAuditor
+				</value>
+				<value>com.scm.dao.csdlocal.domain.BbbeeSanasVerificationAgency
+				</value>
+				<value>com.scm.dao.csdlocal.domain.BbbeeSectorCharter</value>
+				<value>com.scm.dao.csdlocal.domain.BbbeeStatusLevelOfContributor
+				</value>
+				<value>com.scm.dao.csdlocal.domain.BbbeeTotalAnnualTurnover</value>
+				<value>com.scm.dao.csdlocal.domain.BbbeeVerificationRegulator
+				</value>
+				<value>com.scm.dao.csdlocal.domain.BusinessStatus</value>
+				<value>com.scm.dao.csdlocal.domain.City</value>
+				<value>com.scm.dao.csdlocal.domain.Commodity</value>
+				<value>com.scm.dao.csdlocal.domain.CommodityClass</value>
+				<value>com.scm.dao.csdlocal.domain.CommodityFamily</value>
+				<value>com.scm.dao.csdlocal.domain.CommodityGroup</value>
+				<value>com.scm.dao.csdlocal.domain.CommodityItem</value>
+				<value>com.scm.dao.csdlocal.domain.CommodityLocation</value>
+				<value>com.scm.dao.csdlocal.domain.CommodityProvince</value>
+				<value>com.scm.dao.csdlocal.domain.CommoditySegment</value>
+				<value>com.scm.dao.csdlocal.domain.Contact</value>
+				<value>com.scm.dao.csdlocal.domain.ContactType</value>
+				<value>com.scm.dao.csdlocal.domain.ContactTypeList</value>
+				<value>com.scm.dao.csdlocal.domain.Country</value>
+				<value>com.scm.dao.csdlocal.domain.Demographic</value>
+				<value>com.scm.dao.csdlocal.domain.Director</value>
+				<value>com.scm.dao.csdlocal.domain.DirectorFlag</value>
+				<value>com.scm.dao.csdlocal.domain.DirectorFlagDetail</value>
+				<value>com.scm.dao.csdlocal.domain.DirectorStatus</value>
+				<value>com.scm.dao.csdlocal.domain.DirectorType</value>
+				<value>com.scm.dao.csdlocal.domain.DirectorTypeList</value>
+				<value>com.scm.dao.csdlocal.domain.District</value>
+				<value>com.scm.dao.csdlocal.domain.EthnicGroup</value>
+				<value>com.scm.dao.csdlocal.domain.FundingContact</value>
+				<value>com.scm.dao.csdlocal.domain.Gender</value>
+				<value>com.scm.dao.csdlocal.domain.GovernmentType</value>
+				<value>com.scm.dao.csdlocal.domain.IdType</value>
+				<value>com.scm.dao.csdlocal.domain.IndustryClassification</value>
+				<value>com.scm.dao.csdlocal.domain.Municipality</value>
+				<value>com.scm.dao.csdlocal.domain.OwnershipDemographic</value>
+				<value>com.scm.dao.csdlocal.domain.OwnershipNonNatural</value>
+				<value>com.scm.dao.csdlocal.domain.PfmaSchedule</value>
+				<value>com.scm.dao.csdlocal.domain.PreferredCommunicationMethod
+				</value>
+				<value>com.scm.dao.csdlocal.domain.Province</value>
+				<value>com.scm.dao.csdlocal.domain.RestrictedSupplier</value>
+				<value>com.scm.dao.csdlocal.domain.SanasBbbeeVerificationAgency
+				</value>
+				<value>com.scm.dao.csdlocal.domain.StateOwnedPfma</value>
+				<value>com.scm.dao.csdlocal.domain.Suburb</value>
+				<value>com.scm.dao.csdlocal.domain.Supplier</value>
+				<value>com.scm.dao.csdlocal.domain.SupplierClassification</value>
+				<value>com.scm.dao.csdlocal.domain.SupplierFlag</value>
+				<value>com.scm.dao.csdlocal.domain.SupplierFlagDetail</value>
+				<value>com.scm.dao.csdlocal.domain.SupplierFlagType</value>
+				<value>com.scm.dao.csdlocal.domain.SupplierIndustryClassification
+				</value>
+				<value>com.scm.dao.csdlocal.domain.SupplierState</value>
+				<value>com.scm.dao.csdlocal.domain.SupplierSubClassification</value>
+				<value>com.scm.dao.csdlocal.domain.TaxClearanceExemptionReason
+				</value>
+				<value>com.scm.dao.csdlocal.domain.Taxes</value>
+				<value>com.scm.dao.csdlocal.domain.Ward</value>
+				<value>com.scm.dao.csdlocal.domain.XmlFile</value>
+				<value>com.scm.dao.csdlocal.domain.XmlTemp</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.enable_lazy_load_no_trans">true</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.SQLServer2012Dialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.allow_update_outside_transaction">true</prop>
+				<prop key="hibernate.format_sql">false</prop>
+				<prop key="hibernate.jdbc.batch_size">20</prop>
+				<prop key="hibernate.cache.use_second_level_cache">false</prop>
+				<prop key="hibernate.cglib.use_reflection_optimizer">true</prop>
+				<prop key="hibernate.connection.release_mode">auto</prop>
+
+			</props>
+		</property>
+
+	</bean>
+
+	<bean id="cesarDataSource"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass"
+			value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+		<property name="jdbcUrl"
+			value="@@CESAR_DB_URL@@" />
+		<property name="user" value="sa" />
+		<property name="password" value="P@ssword12*" />
+
+		<property name="initialPoolSize" value="10" />
+		<property name="maxPoolSize" value="50" />
+		<property name="minPoolSize" value="5" />
+		<property name="maxIdleTime" value="600" />
+		<property name="checkoutTimeout" value="60000" />
+		<property name="acquireIncrement" value="2" />
+		<property name="acquireRetryAttempts" value="0" />
+
+		<property name="numHelperThreads" value="6" />
+		<property name="acquireRetryDelay" value="3000" />
+
+		<property name="preferredTestQuery"
+			value="select 1 from dual" />
+		<property name="idleConnectionTestPeriod" value="120" />
+		<property name="testConnectionOnCheckin" value="true" />
+		<property name="connectionTesterClassName"
+			value="com.scm.util.DatabaseConnectionTest" />
+	</bean>
+
+	<bean id="cesarSessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="cesarDataSource" />
+		<property name="annotatedClasses">
+			<list>
+				<value>com.scm.dao.cesar.domain.Tb_Application</value>
+				<value>com.scm.dao.cesar.domain.Tb_AppSetting</value>
+				<value>com.scm.dao.cesar.domain.Tb_EmailAccount</value>
+				<value>com.scm.dao.cesar.domain.Tb_EmailAttachmentQueue</value>
+				<value>com.scm.dao.cesar.domain.Tb_EmailException</value>
+				<value>com.scm.dao.cesar.domain.Tb_EmailExceptionType</value>
+				<value>com.scm.dao.cesar.domain.Tb_EmailLog</value>
+				<value>com.scm.dao.cesar.domain.Tb_EmailQueue</value>
+				<value>com.scm.dao.cesar.domain.Tb_EmailStaticAttachment</value>
+				<value>com.scm.dao.cesar.domain.Tb_EmailTemplate</value>
+				<value>com.scm.dao.cesar.domain.Tb_EventLog</value>
+				<value>com.scm.dao.cesar.domain.Tb_ReadEmailAttachment</value>
+				<value>com.scm.dao.cesar.domain.Tb_ReadEmailItem</value>
+				<value>com.scm.dao.cesar.domain.Tb_ReferenceType</value>
+				<value>com.scm.dao.cesar.domain.Tb_SmsQueue</value>
+				<value>com.scm.dao.cesar.domain.Tb_UnreadEmailAttachment</value>
+				<value>com.scm.dao.cesar.domain.Tb_UnreadEmailItem</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<!-- <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop> 
+					<prop key="hibernate.enable_lazy_load_no_trans">true</prop> -->
+				<prop key="hibernate.dialect">org.hibernate.dialect.SQLServer2012Dialect</prop>
+				<prop key="hibernate.allow_update_outside_transaction">true</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">false</prop>
+				<prop key="hibernate.jdbc.batch_size">20</prop>
+				<prop key="hibernate.cache.use_second_level_cache">false</prop>
+				<prop key="hibernate.cglib.use_reflection_optimizer">true</prop>
+				<prop key="hibernate.connection.release_mode">auto</prop>
+
+			</props>
+		</property>
+
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="annotatedClasses">
+
+			<list>
+				<value>com.scm.dao.domain.Accreditation</value>
+				<value>com.scm.dao.domain.AccreditationBody</value>
+				<value>com.scm.dao.domain.AccreditationBodyType</value>
+				<value>com.scm.dao.domain.AccreditationClassType</value>
+				<value>com.scm.dao.domain.AccreditationGradeType</value>
+				<value>com.scm.dao.domain.AccreditationStatus</value>
+				<value>com.scm.dao.domain.Accrual</value>
+				<value>com.scm.dao.domain.Activity</value>
+				<value>com.scm.dao.domain.Address</value>
+				<value>com.scm.dao.domain.AddressType</value>
+				<value>com.scm.dao.domain.ApplicationRole</value>
+				<value>com.scm.dao.domain.ApplicationUserRole</value>
+				<value>com.scm.dao.domain.ApprovalTemplate</value>
+				<value>com.scm.dao.domain.ApprovalTemplateAudit</value>
+				<value>com.scm.dao.domain.AppSetting</value>
+				<value>com.scm.dao.domain.AppSettingAudit</value>
+				<value>com.scm.dao.domain.AspNetRole</value>
+				<value>com.scm.dao.domain.AspNetUser</value>
+				<value>com.scm.dao.domain.AspNetUserClaim</value>
+				<value>com.scm.dao.domain.AspNetUserLogin</value>
+				<value>com.scm.dao.domain.Association</value>
+				<value>com.scm.dao.domain.AssociationStatus</value>
+				<value>com.scm.dao.domain.AssociationType</value>
+				<value>com.scm.dao.domain.AuditTrail</value>
+				<value>com.scm.dao.domain.Bank</value>
+				<value>com.scm.dao.domain.BankAccount</value>
+				<value>com.scm.dao.domain.BankAccountType</value>
+				<value>com.scm.dao.domain.BankVerificationRespons</value>
+				<value>com.scm.dao.domain.BankVerificationStatus</value>
+				<value>com.scm.dao.domain.Bbbee</value>
+				<value>com.scm.dao.domain.BbbeeCertificateType</value>
+				<value>com.scm.dao.domain.BbbeeIrbaRegisteredAuditor</value>
+				<value>com.scm.dao.domain.BbbeeSanasVerificationAgency</value>
+				<value>com.scm.dao.domain.BbbeeSectorCharter</value>
+				<value>com.scm.dao.domain.BbbeeStatusLevelOfContributor</value>
+				<value>com.scm.dao.domain.BbbeeTotalAnnualTurnover</value>
+				<value>com.scm.dao.domain.BbbeeVerificationRegulator</value>
+				<value>com.scm.dao.domain.BenchmarkLinkedCommoditiesAudit</value>
+				<value>com.scm.dao.domain.BenchmarkLinkedCommodity</value>
+				<value>com.scm.dao.domain.BenchmarkLinkedKPI</value>
+				<value>com.scm.dao.domain.BenchmarkLinkedSupplier</value>
+				<value>com.scm.dao.domain.BenchmarkLinkedSuppliersAudit</value>
+				<value>com.scm.dao.domain.BusinessStatus</value>
+				<value>com.scm.dao.domain.CededSupplier</value>
+				<value>com.scm.dao.domain.City</value>
+				<value>com.scm.dao.domain.Clause</value>
+				<value>com.scm.dao.domain.ClauseAudit</value>
+				<value>com.scm.dao.domain.ClauseMapping</value>
+				<value>com.scm.dao.domain.ClauseMappingAudit</value>
+				<value>com.scm.dao.domain.ComitteeMeetingParticipant</value>
+				<value>com.scm.dao.domain.CommitteeMeeting</value>
+				<value>com.scm.dao.domain.Commodity</value>
+				<value>com.scm.dao.domain.CommodityClass</value>
+				<value>com.scm.dao.domain.CommodityFamily</value>
+				<value>com.scm.dao.domain.CommodityGroup</value>
+				<value>com.scm.dao.domain.CommodityItem</value>
+				<value>com.scm.dao.domain.CommodityLocation</value>
+				<value>com.scm.dao.domain.CommodityMasterAgreement</value>
+				<value>com.scm.dao.domain.CommodityMasterAgreementAudit</value>
+				<value>com.scm.dao.domain.CommodityProvince</value>
+				<value>com.scm.dao.domain.CommoditySegment</value>
+				<value>com.scm.dao.domain.Contact</value>
+				<value>com.scm.dao.domain.ContactDetail</value>
+				<value>com.scm.dao.domain.ContactDetailsAudit</value>
+				<value>com.scm.dao.domain.ContactPerson</value>
+				<value>com.scm.dao.domain.ContactType</value>
+				<value>com.scm.dao.domain.ContactTypeList</value>
+				<value>com.scm.dao.domain.ContractClause</value>
+				<value>com.scm.dao.domain.ContractClauseAudit</value>
+				<value>com.scm.dao.domain.ContractDetail</value>
+				<value>com.scm.dao.domain.ContractDetailsAudit</value>
+				<value>com.scm.dao.domain.ContractDetailsWork</value>
+				<value>com.scm.dao.domain.ContractDetailsWorkAudit</value>
+				<value>com.scm.dao.domain.ContractExtension</value>
+				<value>com.scm.dao.domain.ContractMaster</value>
+				<value>com.scm.dao.domain.ContractMasterAudit</value>
+				<value>com.scm.dao.domain.ContractMasterWork</value>
+				<value>com.scm.dao.domain.ContractMasterWorkAudit</value>
+				<value>com.scm.dao.domain.ContractNegotiation</value>
+				<value>com.scm.dao.domain.ContractNegotiationAudit</value>
+				<value>com.scm.dao.domain.ContractRenewal</value>
+				<value>com.scm.dao.domain.ContractStandard</value>
+				<value>com.scm.dao.domain.ContractStandardsAudit</value>
+				<value>com.scm.dao.domain.ContractTermination</value>
+				<value>com.scm.dao.domain.Country</value>
+				<value>com.scm.dao.domain.CycleCount</value>
+				<value>com.scm.dao.domain.CycleCountDetail</value>
+				<value>com.scm.dao.domain.CycleCountWork</value>
+				<value>com.scm.dao.domain.Demographic</value>
+				<value>com.scm.dao.domain.Director</value>
+				<value>com.scm.dao.domain.DirectorFlag</value>
+				<value>com.scm.dao.domain.DirectorFlagDetail</value>
+				<value>com.scm.dao.domain.DirectorStatus</value>
+				<value>com.scm.dao.domain.DirectorType</value>
+				<value>com.scm.dao.domain.DirectorTypeList</value>
+				<value>com.scm.dao.domain.DisposeDetail</value>
+				<value>com.scm.dao.domain.DisposeHeader</value>
+				<value>com.scm.dao.domain.DisposeHeaderWork</value>
+				<value>com.scm.dao.domain.District</value>
+				<value>com.scm.dao.domain.Document</value>
+				<value>com.scm.dao.domain.DocumentAudit</value>
+				<value>com.scm.dao.domain.DocumentCollectionPoint</value>
+				<value>com.scm.dao.domain.ErrorCode</value>
+				<value>com.scm.dao.domain.ErrorMapping</value>
+				<value>com.scm.dao.domain.ErrorMappingAudit</value>
+				<value>com.scm.dao.domain.EthnicGroup</value>
+				<value>com.scm.dao.domain.FundingContact</value>
+				<value>com.scm.dao.domain.GenCycleCountDetail</value>
+				<value>com.scm.dao.domain.GenCycleCountMaster</value>
+				<value>com.scm.dao.domain.Gender</value>
+				<value>com.scm.dao.domain.GoodReceivedInspectionDetail</value>
+				<value>com.scm.dao.domain.GoodsRecievedInspection</value>
+				<value>com.scm.dao.domain.GoodsReturn</value>
+				<value>com.scm.dao.domain.GovernmentType</value>
+				<value>com.scm.dao.domain.IdType</value>
+				<value>com.scm.dao.domain.IndustryClassification</value>
+				<value>com.scm.dao.domain.InformationSession</value>
+				<value>com.scm.dao.domain.Inspection</value>
+				<value>com.scm.dao.domain.InspectionDetail</value>
+				<value>com.scm.dao.domain.InventoryCode</value>
+				<value>com.scm.dao.domain.InventoryCodeAudit</value>
+				<value>com.scm.dao.domain.InventoryCodesWork</value>
+				<value>com.scm.dao.domain.InventoryCodesWorkAudit</value>
+				<value>com.scm.dao.domain.InventoryDefinition</value>
+				<value>com.scm.dao.domain.InventoryDefinitionAudit</value>
+				<value>com.scm.dao.domain.InventoryDefinitionWork</value>
+				<value>com.scm.dao.domain.InventoryDefinitionWorkAudit</value>
+				<value>com.scm.dao.domain.InventoryMasterMftg</value>
+				<value>com.scm.dao.domain.InventoryMasterMftgAudit</value>
+				<value>com.scm.dao.domain.InventoryPricing</value>
+				<value>com.scm.dao.domain.InventoryPricingAudit</value>
+				<value>com.scm.dao.domain.InventorySpecification</value>
+				<value>com.scm.dao.domain.InventorySpecificationAudit</value>
+				<value>com.scm.dao.domain.InventoryWarehouseDefault</value>
+				<value>com.scm.dao.domain.InventoryWarehouseDefaultsAudit</value>
+				<value>com.scm.dao.domain.IPW</value>
+				<value>com.scm.dao.domain.IPWAudit</value>
+				<value>com.scm.dao.domain.ItemBalance</value>
+				<value>com.scm.dao.domain.ItemTransaction</value>
+				<value>com.scm.dao.domain.ItemTransactionMaster</value>
+				<value>com.scm.dao.domain.ItemTransactionMasterWork</value>
+				<value>com.scm.dao.domain.Location</value>
+				<value>com.scm.dao.domain.LocationAudit</value>
+				<value>com.scm.dao.domain.Log</value>
+				<value>com.scm.dao.domain.LogAudit</value>
+				<value>com.scm.dao.domain.LogType</value>
+				<value>com.scm.dao.domain.Menus</value>
+				<value>com.scm.dao.domain.MessageDetail</value>
+				<value>com.scm.dao.domain.MigrationHistory</value>
+				<value>com.scm.dao.domain.Municipality</value>
+				<value>com.scm.dao.domain.NextNumberByTransactionType</value>
+				<value>com.scm.dao.domain.NextNumberByTransactionTypeAudit</value>
+				<value>com.scm.dao.domain.OrganisationalStructure</value>
+				<value>com.scm.dao.domain.OrganisationalStructureAudit</value>
+				<value>com.scm.dao.domain.OwnershipDemographic</value>
+				<value>com.scm.dao.domain.OwnershipNonNatural</value>
+				<value>com.scm.dao.domain.PfmaSchedule</value>
+				<value>com.scm.dao.domain.PhysicalAddress</value>
+				<value>com.scm.dao.domain.PhysicalAddressAudit</value>
+				<value>com.scm.dao.domain.PreferredCommunicationMethod</value>
+				<value>com.scm.dao.domain.PriceBenchmarkDefinition</value>
+				<value>com.scm.dao.domain.PriceBenchmarkDefinitionAudit</value>
+				<value>com.scm.dao.domain.ProcessFlow</value>
+				<value>com.scm.dao.domain.Province</value>
+				<value>com.scm.dao.domain.Query</value>
+				<value>com.scm.dao.domain.QuestionBuilder</value>
+				<value>com.scm.dao.domain.QuestionZone</value>
+				<value>com.scm.dao.domain.ReferenceType</value>
+				<value>com.scm.dao.domain.ReportConfiguration</value>
+				<value>com.scm.dao.domain.ReportPermissionConfiguration</value>
+				<value>com.scm.dao.domain.RequisitionDetail</value>
+				<value>com.scm.dao.domain.RequisitionHeader</value>
+				<value>com.scm.dao.domain.RestrictedSupplier</value>
+				<value>com.scm.dao.domain.RoleRelationship</value>
+				<value>com.scm.dao.domain.RoleRelationshipAudit</value>
+				<value>com.scm.dao.domain.SanasBbbeeVerificationAgency</value>
+				<value>com.scm.dao.domain.Signatory</value>
+				<value>com.scm.dao.domain.SROAudit</value>
+				<value>com.scm.dao.domain.SROe</value>
+				<value>com.scm.dao.domain.StandardAgreement</value>
+				<value>com.scm.dao.domain.StandardAgreementAudit</value>
+				<value>com.scm.dao.domain.StandardAgreementItem</value>
+				<value>com.scm.dao.domain.StandardAgreementItemsAudit</value>
+				<value>com.scm.dao.domain.StandardAgreementWork</value>
+				<value>com.scm.dao.domain.StandardAgreementWorkAudit</value>
+				<value>com.scm.dao.domain.StandardCommodityAgreement</value>
+				<value>com.scm.dao.domain.StandardCommodityAgreementAudit</value>
+				<value>com.scm.dao.domain.StateOwnedPfma</value>
+				<value>com.scm.dao.domain.StockAdjustment</value>
+				<value>com.scm.dao.domain.StockAdjustmentItem</value>
+				<value>com.scm.dao.domain.StockAdjustmentWork</value>
+				<value>com.scm.dao.domain.StockReservation</value>
+				<value>com.scm.dao.domain.StockReservationItem</value>
+				<value>com.scm.dao.domain.StockReservationWork</value>
+				<value>com.scm.dao.domain.StockTransfer</value>
+				<value>com.scm.dao.domain.StockTransferItem</value>
+				<value>com.scm.dao.domain.StockTransferWork</value>
+				<value>com.scm.dao.domain.Suburb</value>
+				<value>com.scm.dao.domain.SupMktDevItem</value>
+				<value>com.scm.dao.domain.SupMktDevKPI</value>
+				<value>com.scm.dao.domain.Supplier</value>
+				<value>com.scm.dao.domain.SupplierClassification</value>
+				<value>com.scm.dao.domain.SupplierCode</value>
+				<value>com.scm.dao.domain.SupplierCodesAudit</value>
+				<value>com.scm.dao.domain.SupplierCodesWork</value>
+				<value>com.scm.dao.domain.SupplierCodesWorkAudit</value>
+				<value>com.scm.dao.domain.SupplierCompliantDetail</value>
+				<value>com.scm.dao.domain.SupplierCompliantHeader</value>
+				<value>com.scm.dao.domain.SupplierCompliantHeaderWork</value>
+				<value>com.scm.dao.domain.SupplierContact</value>
+				<value>com.scm.dao.domain.SupplierEnquiryDetail</value>
+				<value>com.scm.dao.domain.SupplierEnquiryHeader</value>
+				<value>com.scm.dao.domain.SupplierEnquiryHeaderWork</value>
+				<value>com.scm.dao.domain.SupplierFlag</value>
+				<value>com.scm.dao.domain.SupplierFlagDetail</value>
+				<value>com.scm.dao.domain.SupplierFlagType</value>
+				<value>com.scm.dao.domain.SupplierIndustryClassification</value>
+				<value>com.scm.dao.domain.SupplierMarketDevelopment</value>
+				<value>com.scm.dao.domain.SupplierMarketDevelopmentWork</value>
+				<value>com.scm.dao.domain.SupplierMaster</value>
+				<value>com.scm.dao.domain.SupplierMasterAudit</value>
+				<value>com.scm.dao.domain.SupplierMasterWork</value>
+				<value>com.scm.dao.domain.SupplierMasterWorkAudit</value>
+				<value>com.scm.dao.domain.SupplierQuotation</value>
+				<value>com.scm.dao.domain.SupplierRFQ</value>
+				<value>com.scm.dao.domain.SupplierRotation</value>
+				<value>com.scm.dao.domain.SupplierRotationAudit</value>
+				<value>com.scm.dao.domain.SupplierRotationTemplate</value>
+				<value>com.scm.dao.domain.SupplierState</value>
+				<value>com.scm.dao.domain.SupplierSubClassification</value>
+				<value>com.scm.dao.domain.SystemUser</value>
+				<value>com.scm.dao.domain.SystemUserAudit</value>
+				<value>com.scm.dao.domain.TaskComparableRoute</value>
+				<value>com.scm.dao.domain.TaskComparableRouteAudit</value>
+				<value>com.scm.dao.domain.TaskManager</value>
+				<value>com.scm.dao.domain.TaskManagerAudit</value>
+				<value>com.scm.dao.domain.TaxClearanceExemptionReason</value>
+				<value>com.scm.dao.domain.Taxes</value>
+				<value>com.scm.dao.domain.Tender</value>
+				<value>com.scm.dao.domain.TenderActivity</value>
+				<value>com.scm.dao.domain.TenderAdvert</value>
+				<value>com.scm.dao.domain.TenderBidInvitation</value>
+				<value>com.scm.dao.domain.TenderBidPackage</value>
+				<value>com.scm.dao.domain.TenderBidSpecification</value>
+				<value>com.scm.dao.domain.TenderComittee</value>
+				<value>com.scm.dao.domain.TenderEvaluation</value>
+				<value>com.scm.dao.domain.TenderFormOption</value>
+				<value>com.scm.dao.domain.TenderFormRespons</value>
+				<value>com.scm.dao.domain.TenderProcessFlow</value>
+				<value>com.scm.dao.domain.TenderRespons</value>
+				<value>com.scm.dao.domain.TransactionType</value>
+				<value>com.scm.dao.domain.TransactionTypeAudit</value>
+				<value>com.scm.dao.domain.UomConversion</value>
+				<value>com.scm.dao.domain.UomConversionAudit</value>
+				<value>com.scm.dao.domain.UserCode</value>
+
+				<value>com.scm.dao.domain.UserCodeAudit</value>
+				<value>com.scm.dao.domain.UserCodeSetup</value>
+				<value>com.scm.dao.domain.UserCodeSetupAudit</value>
+
+				<value>com.scm.dao.domain.Ward</value>
+				<value>com.scm.dao.domain.WarehouseDetail</value>
+				<value>com.scm.dao.domain.WarehouseDetailsAudit</value>
+				<value>com.scm.dao.domain.WarehouseInventoryDefinition</value>
+				<value>com.scm.dao.domain.WarehouseInventoryDefinitionAudit</value>
+				<value>com.scm.dao.domain.WarehouseInventoryDefinitionWork</value>
+				<value>com.scm.dao.domain.WarehouseInventoryDefinitionWorkAudit
+				</value>
+				<value>com.scm.dao.domain.WarehousePumpDetail</value>
+				<value>com.scm.dao.domain.Workflow</value>
+				<value>com.scm.dao.domain.WorkflowAudit</value>
+				<value>com.scm.dao.domain.WorkflowRegister</value>
+				<value>com.scm.dao.domain.XmlFile</value>
+				<value>com.scm.dao.domain.XmlTemp</value>
+
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<!-- <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop> -->
+				<prop key="hibernate.dialect">org.hibernate.dialect.SQLServer2012Dialect</prop>
+				<prop key="hibernate.allow_update_outside_transaction">true</prop>
+				<prop key="hibernate.enable_lazy_load_no_trans">true</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">false</prop>
+				<prop key="hibernate.jdbc.batch_size">20</prop>
+				<prop key="hibernate.cache.use_second_level_cache">false</prop>
+				<prop key="hibernate.cglib.use_reflection_optimizer">true</prop>
+				<prop key="hibernate.connection.release_mode">auto</prop>
+
+			</props>
+		</property>
+	</bean>
+
+</beans>

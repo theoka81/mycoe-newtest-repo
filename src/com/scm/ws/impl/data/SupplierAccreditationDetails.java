@@ -1,0 +1,47 @@
+
+package com.scm.ws.impl.data;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({
+    "MasterSupplierAccreditationList"
+})
+@Generated("jsonschema2pojo")
+public class SupplierAccreditationDetails {
+
+    @JsonProperty("MasterSupplierAccreditationList")
+    private List<MasterSupplierAccreditation> masterSupplierAccreditationList = null;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    @JsonProperty("MasterSupplierAccreditationList")
+    public List<MasterSupplierAccreditation> getMasterSupplierAccreditationList() {
+        return masterSupplierAccreditationList;
+    }
+
+    @JsonProperty("MasterSupplierAccreditationList")
+    public void setMasterSupplierAccreditationList(List<MasterSupplierAccreditation> masterSupplierAccreditationList) {
+        this.masterSupplierAccreditationList = masterSupplierAccreditationList;
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+    }
+
+}

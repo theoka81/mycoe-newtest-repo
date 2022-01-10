@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!DOCTYPE
+ struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd"
+	>
+<struts>
+	<constant name="struts.enable.DynamicMethodInvocation"
+		value="false" />
+	<constant name="struts.objectFactory" value="spring" />
+	<constant name="struts.devMode" value="false" />
+	<constant name="struts.custom.i18n.resources"
+		value="ApplicationResources" />
+	<constant name="struts.multipart.maxSize" value="1524288000" />
+	<package name="default" extends="struts-default, json-default"
+		namespace="/default">
+		<interceptors>
+			<interceptor name="requestValidator"
+				class="com.scm.interceptor.RequestValidator" />
+			<interceptor name="json"
+				class="org.apache.struts2.json.JSONInterceptor" />
+			<interceptor-stack name="myStack">
+				<interceptor-ref name="requestValidator" />
+				<interceptor-ref name="json" />
+				<interceptor-ref name="exception" />
+				<interceptor-ref name="servletConfig" />
+				<interceptor-ref name="chain" />
+				<interceptor-ref name="fileUpload" />
+				<interceptor-ref name="checkbox" />
+				<interceptor-ref name="staticParams" />
+				<interceptor-ref name="actionMappingParams" />
+				<interceptor-ref name="params">
+					<param name="excludeParams">dojo\..*,^struts\..*</param>
+				</interceptor-ref>
+				<interceptor-ref name="conversionError" />
+				<interceptor-ref name="validation">
+					<param name="excludeMethods">input,back,cancel,browse</param>
+				</interceptor-ref>
+				<interceptor-ref name="workflow">
+					<param name="excludeMethods">input,back,cancel,browse</param>
+				</interceptor-ref>
+			</interceptor-stack>
+			<interceptor-stack name="myFileUploadStack">
+				<interceptor-ref name="myStack" />
+				<interceptor-ref name="fileUploadStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="myStack" />
+		<global-results>
+			<result name="timeout" type="redirect">
+				<param name="actionName">Login</param>
+				<param name="namespace">/Account</param>
+			</result>
+			<result name="ExpireSession" type="redirect">
+				<param name="actionName">Login</param>
+				<param name="namespace">/Account</param>
+			</result>
+		</global-results>
+	</package>
+	<package name="Account" namespace="/Account" extends="default">
+		<action name="Login" class="loginAction">
+			<result name="success">/jsp/login.jsp</result>
+		</action>
+		<action name="Register" class="loginAction" method="goRegister">
+			<result name="success">/jsp/registration.jsp</result>
+		</action>
+		<action name="saveSupplier" class="loginAction"
+			method="saveSupplierDetails">
+			<result name="success" type="chain">
+				<param name="actionName">Details</param>
+				<param name="namespace">/Suppliers</param>
+			</result>
+			<result name="error">/jsp/registration.jsp</result>
+			<result name="input">/jsp/registration.jsp</result>
+		</action>
+		<action name="goLogin" class="loginAction" method="login">
+			<result name="success" type="redirect">../Home/home</result>
+		</action>
+		<action name="LogOff" class="loginAction"
+			method="exitApplication">
+			<result name="success" type="redirect">../Account/Login</result>
+		</action>
+		<action name="ExpireSession" class="loginAction"
+			method="exitApplication">
+			<result name="success" type="redirect">../Account/Login</result>
+		</action>
+	</package>
+	<package name="Home" namespace="/Home" extends="default">
+		<action name="home" class="homeAction"
+			method="goGetApplicationHomeDetails">
+			<result name="supplier">/jsp/supplierHome.jsp</result>
+			<result name="backoffice">/jsp/adminHome.jsp</result>
+			<result name="others">/jsp/othersHome.jsp</result>
+		</action>
+		<action name="Search" class="homeAction"
+			method="goGetSupplierDetails">
+			<result name="success">/jsp/supplierMaster/supplierSearch.jsp</result>
+		</action>
+		<action name="Advertising" class="homeAction"
+			method="goGetAdvertisingDetails">
+			<result name="success">/jsp/advertising/advertisingSearch.jsp</result>
+		</action>
+		<action name="LoadEnquiryCompliantCount" class="homeAction"
+			method="goLoadEnquiryCompliantCount">
+			<result name="success" type="json" />
+		</action>
+		<action name="WorkFlowGraphData" class="homeAction"
+			method="goGetWorkFlowGraphData">
+			<result name="success" type="json" />
+		</action>
+	</package>
+	<package name="supplierMaster" namespace="/supplierMaster"
+		extends="default">
+		<action name="manageSupplierMaster"
+			class="supplierMasterAction">
+			<result name="success">/jsp/supplierMaster/manageSupplierMaster.jsp
+			</result>
+		</action>
+		<action name="ajaxManageSupplierMaster"
+			class="supplierMasterAction" method="goManageSupplierMasterDetails">
+			<result name="success" type="json" />
+		</action>
+		<action name="LoadSuppliers" class="supplierMasterAction"
+			method="goLoadSuppliers">
+			<result name="success" type="json" />
+		</action>
+	</package>
+	<package name="Suppliers" namespace="/Suppliers"
+		extends="default">
+		<action name="Details" class="supplierAction"
+			method="goGetDetails">
+			<result name="success">/jsp/supplier/details.jsp</result>
+		</action>
+		<action name="Index" class="supplierAction"
+			method="goSupplierMastersIndex">
+			<result name="success">/jsp/supplier/supplierMasterIndex.jsp</result>
+		</action>
+		<action name="LoadSupplierBackOffice" class="supplierAction"
+			method="goLoadSupplierMasterIndex">
+			<result name="success" type="json" />
+		</action>
+		<action name="saveDetails" class="supplierAction"
+			method="gosaveDetails">
+			<result name="success">/jsp/supplier/details.jsp</result>
+			<result name="close" type="redirect">../Home/home</result>
+		</action>
+	</package>
+	<package name="Inventory" namespace="/Inventory"
+		extends="default">
+		<action name="IdenIndex" class="inventoryAction"
+			method="goInventoryIdentificationIndex">
+			<result name="success">/jsp/inventory/inventoryHome.jsp</result>
+		</action>
+		<action name="SpecIndex" class="inventoryAction"
+			method="goInventorySpecificationIndex">
+			<result name="success">/jsp/inventory/inventoryHome.jsp</result>
+		</action>
+		<action name="Details" class="inventoryAction"
+			method="goGetDetails">
+			<result name="success">/jsp/inventory/inventoryDetails.jsp</result>
+		</action>
+		<action name="saveDetails" class="inventoryAction"
+			method="gosaveDetails">
+			<result name="success">/jsp/inventory/inventoryDetails.jsp</result>
+		</action>
+		<action name="LoadInventories" class="inventoryAction"
+			method="goLoadInventories">
+			<result name="success" type="json" />
+		</action>
+	</package>
+	<package name="Warehouse" namespace="/Warehouse"
+		extends="default">
+		<action name="LoadActiveWarehouses" class="warehouseAction"
+			method="goLoadActiveWarehouses">
+			<result name="success" type="json" />
+		</action>
+		<action name="ExtendItemsToWarehouse" class="warehouseAction"
+			method="goExtendItemsToWarehouse">
+			<result name="success" type="json" />
+		</action>
+	</package>
+	<package name="Contract" namespace="/Contract"
+		extends="default">
+		<action name="Index" class="contractAction"
+			method="goContractMastersIndex">
+			<result name="success">/jsp/contract/contractMasterIndex.jsp</result>
+		</action>
+		<action name="LoadContractsMasterDetails"
+			class="contractAction" method="goLoadContractMastersIndex">
+			<result name="success" type="json" />
+		</action>
+		<action name="MasterDetails" class="contractAction"
+			method="goLoadContractMasterDetails">
+			<result name="success">/jsp/contract/contractMasterDetails.jsp</result>
+		</action>
+		<action name="DetailsIndex" class="contractAction"
+			method="goContractDetailsIndex">
+			<result name="success">/jsp/contract/contractDetailsIndex.jsp</result>
+		</action>
+		<action name="LoadContractDetailsIndex" class="contractAction"
+			method="goLoadContractDetailsIndex">
+			<result name="success" type="json" />
+		</action>
+		<action name="Details" class="contractAction"
+			method="goLoadContractDetails">
+			<result name="success">/jsp/contract/contractDetails.jsp</result>
+		</action>
+		<action name="saveContractDetails" class="contractAction"
+			method="goSaveContractDetails">
+			<result name="success">/jsp/contract/contractDetails.jsp</result>
+		</action>
+		<action name="saveContractMasterDetails" class="contractAction"
+			method="goSaveContractMasterDetails">
+			<result name="success">/jsp/contract/contractDetails.jsp</result>
+		</action>
+	</package>
+	<package name="Workflow" namespace="/Workflow"
+		extends="default">
+		<action name="Index" class="workflowAction">
+			<result name="success">/jsp/workflow/workflowHome.jsp</result>
+		</action>
+		<action name="Details" class="contractAction">
+			<result name="success">/jsp/workflow/approval.jsp</result>
+		</action>
+		<action name="TotalVsApproved" class="workflowAction"
+			method="goTotalVsApproved">
+			<result name="success" type="json" />
+		</action>
+		<action name="Pagination" class="workflowAction"
+			method="goPagination">
+			<result name="success" type="json" />
+		</action>
+	</package>
+	<package name="Document" namespace="/Document"
+		extends="default">
+		<action name="GetDocument" class="documentAction"
+			method="goGetDocument">
+			<result name="success"></result>
+		</action>
+		<action name="RenderDocumentDetails" class="documentAction"
+			method="goRenderDocumentDetails">
+			<result name="success">/jsp/documents/documentDetails.jsp</result>
+			<result name="error">/jsp/common/empty.jsp</result>
+		</action>
+		<action name="DeleteDocument" class="workflowAction"
+			method="goDeleteDocument">
+			<result name="success"></result>
+		</action>
+		<action name="UploadAdditional" class="documentAction"
+			method="goUploadAdditionalDocument">
+			<result name="success" type="json" />
+		</action>
+	</package>
+	<package name="SystemUsers" namespace="/SystemUsers"
+		extends="default">
+		<action name="Index" class="userAction">
+			<result name="success">/jsp/SystemUsers/index.jsp</result>
+		</action>
+		<action name="loadSystemUsers" class="userAction"
+			method="goLoadSystemUsers">
+			<result name="success" type="json" />
+		</action>
+		<action name="Create" class="userAction">
+			<result name="success">/jsp/SystemUsers/create.jsp</result>
+		</action>
+		<action name="Details" class="userAction"
+			method="loadSystemUserDetails">
+			<result name="success">/jsp/SystemUsers/details.jsp</result>
+		</action>
+	</package>
+
+	<package name="Address" namespace="/Address" extends="default">
+		<action name="Index" class="addressAction">
+			<result name="success">/jsp/Address/index.jsp</result>
+		</action>
+		<action name="loadSupplierAddress" class="addressAction"
+			method="goLoadSupplierAddress">
+			<result name="success" type="json" />
+		</action>
+		<action name="Create" class="addressAction">
+			<result name="success">/jsp/Address/create.jsp</result>
+		</action>
+		<action name="Details" class="addressAction"
+			method="loadSupplierAddressDetails">
+			<result name="success">/jsp/Address/details.jsp</result>
+		</action>
+	</package>
+</struts>
